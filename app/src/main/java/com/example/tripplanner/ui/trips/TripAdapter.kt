@@ -15,6 +15,8 @@ class TripAdapter(
 
     class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTripName: TextView = itemView.findViewById(R.id.tvTripName)
+
+        val tvTripIdItem: TextView = itemView.findViewById(R.id.tvTripIdItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
@@ -26,6 +28,8 @@ class TripAdapter(
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
         val trip = trips[position]
         holder.tvTripName.text = trip.name
+
+        holder.tvTripIdItem.text = "ID: ${trip.id}"
 
         holder.itemView.setOnClickListener {
             onTripClick(trip)
