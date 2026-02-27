@@ -4,27 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.tripdetail.TripDetailFragment">
+    tools:context=".ui.tripdetail.TripDetailFragment"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TÍTULO DEL VIAJE -->
     <TextView
-        android:id="@+id/tvDetail"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvTripTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Detalle del viaje"
-        android:textSize="20sp"
+        android:text="Título del viaje"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- DESTINO -->
     <TextView
-        android:id="@+id/tvTripId"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvTripDestination"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="ID"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvDetail"
+        android:text="Destino"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTripTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- FECHAS -->
+    <TextView
+        android:id="@+id/tvTripDates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Fechas"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTripDestination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- NOTAS -->
+    <TextView
+        android:id="@+id/tvTripNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Notas"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTripDates"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>

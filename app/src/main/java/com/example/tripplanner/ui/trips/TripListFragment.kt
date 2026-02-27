@@ -40,8 +40,30 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
     }
 
     private val trips = listOf(
-        Trip(1, "Viaje a Roma"),
-        Trip (2, "Fin de semana en París"),
-        Trip (3, "Ruta por Andalucía")
-    )
+        Trip(
+            id = 1,
+            title = "Viaje de verano",
+            destination = "Roma",
+            startDate = null,
+            endDate = null,
+            notes = "Mirar vuelos y alojamiento"
+        ),
+        Trip(
+            id = 2,
+            title = "Escapada con amigos",
+            destination = "París",
+            startDate = "2024-05-10",
+            endDate = "2024-05-12",
+            notes = null
+        ),
+        Trip(
+            id = 3,
+            title = "Ruta por el sur",
+            destination = "Andalucía",
+            startDate = null,
+            endDate = null,
+            notes = "Alquilar coche"
+        ),
+
+        )
 }

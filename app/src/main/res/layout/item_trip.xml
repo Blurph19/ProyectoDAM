@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tvTripIdItem"
+        android:id="@+id/tvTripSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="ID del viaje"
