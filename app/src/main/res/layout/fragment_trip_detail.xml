@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Título del viaje"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,38 +21,102 @@
 
     <!-- DESTINO -->
     <TextView
-        android:id="@+id/tvTripDestination"
+        android:id="@+id/labelDestination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Destino"
-        android:textSize="18sp"
+        android:text="DESTINO"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/tvTripTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
+    <TextView
+        android:id="@+id/tvTripDestination"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Destino"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/labelDestination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"/>
+
+    <View
+        android:id="@+id/dividerTop"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTripDestination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- FECHAS -->
+    <TextView
+        android:id="@+id/labelDates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="FECHAS"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/dividerTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
     <TextView
         android:id="@+id/tvTripDates"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Fechas"
+        android:text="Fechas del viaje"
+        android:textStyle="italic"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tvTripDestination"
+        app:layout_constraintTop_toBottomOf="@id/labelDates"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="4dp"/>
+
+    <View
+        android:id="@+id/dividerBottom"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTripDates"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- NOTAS -->
+    <TextView
+        android:id="@+id/labelNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="NOTAS"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/dividerBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
     <TextView
         android:id="@+id/tvTripNotes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Notas"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tvTripDates"
+        app:layout_constraintTop_toBottomOf="@id/labelNotes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="4dp"
+        android:lineSpacingExtra="4dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
