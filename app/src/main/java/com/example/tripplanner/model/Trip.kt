@@ -1,7 +1,11 @@
 package com.example.tripplanner.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Trip (
-    val id: Int,
+    @PrimaryKey val id: Int,
     val title: String,
     val destination: String,
     val startDate: String?,
