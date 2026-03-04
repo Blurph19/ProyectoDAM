@@ -1,4 +1,4 @@
-package com.example.tripplanner.model
+package com.example.tripplanner.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

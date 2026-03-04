@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.tripplanner.R
-import com.example.tripplanner.model.Trip
+import com.example.tripplanner.data.local.entity.Trip
 import org.w3c.dom.Text
 
 private const val ARG_TRIP_TITLE = "arg_trip_title"

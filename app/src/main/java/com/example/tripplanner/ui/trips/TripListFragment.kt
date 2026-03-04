@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.tripplanner.R
-import com.example.tripplanner.model.Trip
+import com.example.tripplanner.data.local.entity.Trip
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

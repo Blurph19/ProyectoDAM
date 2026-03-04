@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tripplanner.R
-import com.example.tripplanner.model.Trip
+import com.example.tripplanner.data.local.entity.Trip
 
 class TripAdapter(
     private val trips: List<Trip>,
