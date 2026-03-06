@@ -9,7 +9,7 @@ import com.example.tripplanner.R
 import com.example.tripplanner.data.local.entity.Trip
 
 class TripAdapter(
-    private val trips: List<Trip>,
+    private var trips: List<Trip>,
     private val onTripClick: (Trip) -> Unit
 ) : RecyclerView.Adapter<TripAdapter.TripViewHolder>() {
 
@@ -37,4 +37,9 @@ class TripAdapter(
     }
 
     override fun getItemCount(): Int = trips.size
+
+    fun updateTrips(newTrips: List<Trip>) {
+        trips = newTrips
+        notifyDataSetChanged()
+    }
 }

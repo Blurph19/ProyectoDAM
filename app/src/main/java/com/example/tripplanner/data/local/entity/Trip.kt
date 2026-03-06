@@ -5,7 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Trip (
-    @PrimaryKey val id: Int,
+
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+
     val title: String,
     val destination: String,
     val startDate: String?,

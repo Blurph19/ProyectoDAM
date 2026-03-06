@@ -19,6 +19,7 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
     }
 
     private var listener: OnTripSelectedListener? = null
+    private lateinit var adapter: TripAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,38 +33,15 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = TripAdapter(trips) { trip ->
-            listener?.onTripSelected(trip)
+        adapter = TripAdapter(emptyList()) { trip ->
+            //click
         }
 
         recyclerView.adapter = adapter
     }
 
-    private val trips = listOf(
-        Trip(
-            id = 1,
-            title = "Viaje de verano",
-            destination = "Roma",
-            startDate = null,
-            endDate = null,
-            notes = "Mirar vuelos y alojamiento"
-        ),
-        Trip(
-            id = 2,
-            title = "Escapada con amigos",
-            destination = "París",
-            startDate = "2024-05-10",
-            endDate = "2024-05-12",
-            notes = null
-        ),
-        Trip(
-            id = 3,
-            title = "Ruta por el sur",
-            destination = "Andalucía",
-            startDate = null,
-            endDate = null,
-            notes = "Alquilar coche"
-        ),
+    fun updateTrips(trips: List<Trip>) {
+        adapter.updateTrips(trips)
+    }
 
-        )
 }
