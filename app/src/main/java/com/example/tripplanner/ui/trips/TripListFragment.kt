@@ -11,6 +11,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tripplanner.ui.trips.TripAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.content.Intent
+import com.example.tripplanner.ui.createtrip.CreateTripActivity
+
 
 class TripListFragment : Fragment(R.layout.fragment_trip_list) {
 
@@ -28,6 +32,13 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val fabAddTrip = view.findViewById<FloatingActionButton>(R.id.fabAddTrip)
+
+        fabAddTrip.setOnClickListener {
+            val intent = Intent(requireContext(), CreateTripActivity::class.java)
+            startActivity(intent)
+        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerTrips)
 
