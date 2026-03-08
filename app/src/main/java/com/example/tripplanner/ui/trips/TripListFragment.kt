@@ -14,6 +14,7 @@ import com.example.tripplanner.ui.trips.TripAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
 import com.example.tripplanner.ui.createtrip.CreateTripActivity
+import com.example.tripplanner.ui.main.MainActivity
 
 
 class TripListFragment : Fragment(R.layout.fragment_trip_list) {
@@ -45,10 +46,15 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = TripAdapter(emptyList()) { trip ->
-            //click
+            listener?.onTripSelected(trip)
         }
 
         recyclerView.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.loadTrips()
     }
 
     fun updateTrips(trips: List<Trip>) {

@@ -39,6 +39,11 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadTrips()
+    }
+
     override fun onTripSelected(trip: Trip) {
 
         val detailFragment = TripDetailFragment.newInstance(trip)
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    private fun loadTrips() {
+    fun loadTrips() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val trips = database.tripDao().getAllTrips()
