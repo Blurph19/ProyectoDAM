@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.room.Room
 import com.example.tripplanner.data.local.database.AppDatabase
+import androidx.appcompat.app.AlertDialog
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
@@ -66,15 +67,22 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         btnDeleteTrip.setOnClickListener {
 
-            CoroutineScope(Dispatchers.IO).launch {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Eliminar viaje")
+                .setMessage("¿Seguro que quieres eliminar este viaje?")
+                .setPositiveButton("Eliminar") { _, _ ->
 
-                database.tripDao().deleteTrip(trip)
+                    CoroutineScope(Dispatchers.IO).launch {
 
-                activity?. runOnUiThread {
-                    parentFragmentManager.popBackStack()
+                        database.tripDao().deleteTrip(trip)
+
+                        activity?.runOnUiThread {
+                            parentFragmentManager.popBackStack()
+                        }
+                    }
                 }
-            }
-
+                .setNegativeButton("Cancelar", null)
+                .show()
         }
 
     }

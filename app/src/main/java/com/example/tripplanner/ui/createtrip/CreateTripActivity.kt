@@ -30,16 +30,26 @@ class CreateTripActivity : AppCompatActivity() {
         ).build()
 
         btnSaveTrip.setOnClickListener {
-            val title = etTitle.text.toString()
-            val destination = etDestination.text.toString()
-            val notes = etNotes.text.toString()
+            val title = etTitle.text.toString().trim()
+            val destination = etDestination.text.toString().trim()
+            val notes = etNotes.text.toString().trim()
+
+            if (title.isEmpty()) {
+                etTitle.error = "Introduce un título"
+                return@setOnClickListener
+            }
+
+            if (destination.isEmpty()) {
+                etDestination.error = "Introduce un destino"
+                return@setOnClickListener
+            }
 
             val trip = Trip(
                 title = title,
                 destination = destination,
                 startDate = null,
                 endDate = null,
-                notes = notes,
+                notes = notes
             )
 
             CoroutineScope(Dispatchers.IO).launch {
