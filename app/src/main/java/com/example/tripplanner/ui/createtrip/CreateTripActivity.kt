@@ -1,5 +1,7 @@
 package com.example.tripplanner.ui.createtrip
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Button
@@ -12,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 class CreateTripActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +26,9 @@ class CreateTripActivity : AppCompatActivity() {
         val etNotes = findViewById<EditText>(R.id.etNotes)
         val btnSaveTrip = findViewById<Button>(R.id.btnSaveTrip)
 
+        val etStartDate = findViewById<EditText>(R.id.etStartDate)
+        val etEndDate = findViewById<EditText>(R.id.etEndDate)
+
         val database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -33,6 +39,9 @@ class CreateTripActivity : AppCompatActivity() {
             val title = etTitle.text.toString().trim()
             val destination = etDestination.text.toString().trim()
             val notes = etNotes.text.toString().trim()
+
+            val startDate = etStartDate.text.toString().ifEmpty { null }
+            val endDate = etEndDate.text.toString().ifEmpty { null }
 
             if (title.isEmpty()) {
                 etTitle.error = "Introduce un título"
@@ -47,8 +56,8 @@ class CreateTripActivity : AppCompatActivity() {
             val trip = Trip(
                 title = title,
                 destination = destination,
-                startDate = null,
-                endDate = null,
+                startDate = startDate,
+                endDate = endDate,
                 notes = notes
             )
 
@@ -64,6 +73,33 @@ class CreateTripActivity : AppCompatActivity() {
 
         }
 
+        etStartDate.setOnClickListener {
+            showDatePicker(etStartDate)
+        }
+
+        etEndDate.setOnClickListener {
+            showDatePicker(etEndDate)
+        }
+
+    }
+
+    private fun showDatePicker(target: EditText) {
+        val calendar = Calendar.getInstance()
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+
+            val formattedMonth = selectedMonth + 1
+            val date = "%04d-%02d-%02d".format(selectedYear, selectedMonth, selectedDay)
+
+            target.setText(date)
+
+        }, year, month, day)
+
+        datePicker.show()
     }
 
 }

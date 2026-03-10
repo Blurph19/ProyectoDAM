@@ -32,7 +32,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
         val etDestination = view.findViewById<TextView>(R.id.etTripDestination)
-        // val tvDates = view.findViewById<TextView>(R.id.tvTripDates)
+        val tvDates = view.findViewById<TextView>(R.id.tvTripDates)
         val etNotes = view.findViewById<TextView>(R.id.etTripNotes)
 
         val btnSaveChanges = view.findViewById<Button>(R.id.btnSaveChanges)
@@ -42,6 +42,12 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         etTitle.setText(trip.title)
         etDestination.setText(trip.destination)
         etNotes.setText(trip.notes)
+
+        if (trip.startDate !=null && trip.endDate !=null) {
+            tvDates.text = "${trip.startDate} - ${trip.endDate}"
+        } else {
+            tvDates.visibility = View.GONE
+        }
 
         btnSaveChanges.setOnClickListener {
 

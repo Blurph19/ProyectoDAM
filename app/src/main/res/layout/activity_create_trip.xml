@@ -55,6 +55,53 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Fechas -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilStartDate"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fecha Inicio"
+        app:layout_constraintTop_toBottomOf="@id/tilDestination"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:inputType="none"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEndDate"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fecha Final"
+        app:layout_constraintTop_toBottomOf="@id/tilStartDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:inputType="none"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Notas -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNotes"
@@ -62,7 +109,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Notas"
-        app:layout_constraintTop_toBottomOf="@id/tilDestination"
+        app:layout_constraintTop_toBottomOf="@id/tilEndDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="12dp"
