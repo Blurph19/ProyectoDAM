@@ -8,8 +8,8 @@
     android:padding="16dp">
 
     <!-- TÍTULO DEL VIAJE -->
-    <TextView
-        android:id="@+id/tvTripTitle"
+    <EditText
+        android:id="@+id/etTripTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Título del viaje"
@@ -28,13 +28,13 @@
         android:textSize="12sp"
         android:textStyle="bold"
         android:textColor="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/tvTripTitle"
+        app:layout_constraintTop_toBottomOf="@id/etTripTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <TextView
-        android:id="@+id/tvTripDestination"
+    <EditText
+        android:id="@+id/etTripDestination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Destino"
@@ -52,7 +52,7 @@
         android:background="@android:color/darker_gray"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTripDestination"
+        app:layout_constraintTop_toBottomOf="@id/etTripDestination"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -107,16 +107,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/tvTripNotes"
+    <EditText
+        android:id="@+id/etTripNotes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Notas"
         android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/labelNotes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="4dp"
         android:lineSpacingExtra="4dp"/>
+
+    <Button
+        android:id="@+id/btnSaveChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar cambios"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/etTripNotes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

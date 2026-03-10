@@ -2,48 +2,67 @@ package com.example.tripplanner.ui.tripdetail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.tripplanner.R
 import com.example.tripplanner.data.local.entity.Trip
-import org.w3c.dom.Text
-
-private const val ARG_TRIP_TITLE = "arg_trip_title"
-private const val ARG_TRIP_DESTINATION = "arg_trip_destination"
-private const val ARG_TRIP_START_DATE = "arg_trip_start_date"
-private const val ARG_TRIP_END_DATE = "arg_trip_end_date"
-private const val ARG_TRIP_NOTES = "arg_trip_notes"
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import androidx.room.Room
+import com.example.tripplanner.data.local.database.AppDatabase
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
+
+    private lateinit var trip : Trip
+    private lateinit var database: AppDatabase
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val title = arguments?.getString(ARG_TRIP_TITLE)
-        val destination = arguments?.getString(ARG_TRIP_DESTINATION)
-        val startDate = arguments?.getString(ARG_TRIP_START_DATE)
-        val endDate = arguments?.getString(ARG_TRIP_END_DATE)
-        val notes = arguments?.getString(ARG_TRIP_NOTES)
+        trip = requireArguments().getParcelable("trip")!!
 
-        val tvTitle = view.findViewById<TextView>(R.id.tvTripTitle)
-        val tvDestination = view.findViewById<TextView>(R.id.tvTripDestination)
-        val tvDates = view.findViewById<TextView>(R.id.tvTripDates)
-        val tvNotes = view.findViewById<TextView>(R.id.tvTripNotes)
+        database = Room.databaseBuilder(
+            requireContext(),
+            AppDatabase::class.java,
+            "trip_database"
+        ).build()
 
-        tvTitle.text = title ?: "Sin título"
-        tvDestination.text = destination ?: "Destino por definir"
+        val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
+        val etDestination = view.findViewById<TextView>(R.id.etTripDestination)
+        // val tvDates = view.findViewById<TextView>(R.id.tvTripDates)
+        val etNotes = view.findViewById<TextView>(R.id.etTripNotes)
 
-        if (startDate != null && endDate !=null) {
-            tvDates.text = "$startDate - $endDate"
-        } else {
-            tvDates.visibility = View.GONE
+        val btnSaveChanges = view.findViewById<Button>(R.id.btnSaveChanges)
+
+
+        etTitle.setText(trip.title)
+        etDestination.setText(trip.destination)
+        etNotes.setText(trip.notes)
+
+        btnSaveChanges.setOnClickListener {
+
+            val updatedTitle = etTitle.text.toString()
+            val updatedDestination = etDestination.text.toString()
+            val updatedNotes = etNotes.text.toString()
+
+            val updatedTrip = trip.copy(
+                title = updatedTitle,
+                destination = updatedDestination,
+                notes = updatedNotes
+            )
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                database.tripDao().updateTrip(updatedTrip)
+
+                activity?.runOnUiThread {
+                    parentFragmentManager.popBackStack()
+                }
+            }
         }
 
-        if (!notes.isNullOrBlank()) {
-            tvNotes.text = notes
-        } else {
-            tvNotes.visibility = View.GONE
-        }
     }
 
     companion object  {
@@ -52,11 +71,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             val fragment = TripDetailFragment()
 
             val bundle = Bundle().apply {
-                putString(ARG_TRIP_TITLE, trip.title)
-                putString(ARG_TRIP_DESTINATION, trip.destination)
-                putString(ARG_TRIP_START_DATE, trip.startDate)
-                putString(ARG_TRIP_END_DATE, trip.endDate)
-                putString(ARG_TRIP_NOTES, trip.notes)
+                putParcelable("trip", trip)
             }
 
             fragment.arguments = bundle
