@@ -1,6 +1,7 @@
 package com.example.tripplanner.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -17,4 +18,7 @@ interface TripDao {
 
     @Update
     suspend fun updateTrip(trip: Trip)
+
+    @Delete
+    suspend fun deleteTrip(trip: Trip)
 }

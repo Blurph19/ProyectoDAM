@@ -35,6 +35,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         val etNotes = view.findViewById<TextView>(R.id.etTripNotes)
 
         val btnSaveChanges = view.findViewById<Button>(R.id.btnSaveChanges)
+        val btnDeleteTrip = view.findViewById<Button>(R.id.btnDeleteTrip)
 
 
         etTitle.setText(trip.title)
@@ -61,6 +62,19 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
                     parentFragmentManager.popBackStack()
                 }
             }
+        }
+
+        btnDeleteTrip.setOnClickListener {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                database.tripDao().deleteTrip(trip)
+
+                activity?. runOnUiThread {
+                    parentFragmentManager.popBackStack()
+                }
+            }
+
         }
 
     }
