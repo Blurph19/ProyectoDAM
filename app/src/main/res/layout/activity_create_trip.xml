@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Encabezado -->
     <TextView
         android:id="@+id/tvEncabezado"
         android:layout_width="wrap_content"
@@ -14,46 +15,74 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="24dp"/>
 
-    <EditText
-        android:id="@+id/etTitle"
+    <!-- Título del viaje -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTitle"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Título del viaje"
-        android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/tvEncabezado"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"/>
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp">
 
-    <EditText
-        android:id="@+id/etDestination"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Destino -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDestination"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Destino"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/etTitle"
+        app:layout_constraintTop_toBottomOf="@id/tilTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp" />
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/etNotes"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Notas -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNotes"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Notas"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/etDestination"
+        app:layout_constraintTop_toBottomOf="@id/tilDestination"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"/>
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp">
 
+        <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Botón guardar -->
     <Button
         android:id="@+id/btnSaveTrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar viaje"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/etNotes"
+        app:layout_constraintTop_toBottomOf="@id/tilNotes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
