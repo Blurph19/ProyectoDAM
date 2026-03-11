@@ -16,7 +16,7 @@ import androidx.appcompat.app.AlertDialog
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
-    private lateinit var trip : Trip
+    private lateinit var trip: Trip
     private lateinit var database: AppDatabase
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,9 +25,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         trip = requireArguments().getParcelable("trip")!!
 
         database = Room.databaseBuilder(
-            requireContext(),
-            AppDatabase::class.java,
-            "trip_database"
+            requireContext(), AppDatabase::class.java, "trip_database"
         ).build()
 
         val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
@@ -43,10 +41,22 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         etDestination.setText(trip.destination)
         etNotes.setText(trip.notes)
 
-        if (trip.startDate !=null && trip.endDate !=null) {
-            tvDates.text = "${trip.startDate} - ${trip.endDate}"
-        } else {
-            tvDates.visibility = View.GONE
+        when {
+            trip.startDate != null && trip.endDate != null -> {
+                tvDates.text = "${formatDate(trip.startDate!!)} – ${formatDate(trip.endDate!!)}"
+            }
+
+            trip.startDate != null -> {
+                tvDates.text = "Desde ${formatDate(trip.startDate!!)}"
+            }
+
+            trip.endDate != null -> {
+                tvDates.text = "Hasta ${formatDate(trip.endDate!!)}"
+            }
+
+            else -> {
+                tvDates.visibility = View.GONE
+            }
         }
 
         btnSaveChanges.setOnClickListener {
@@ -56,9 +66,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             val updatedNotes = etNotes.text.toString()
 
             val updatedTrip = trip.copy(
-                title = updatedTitle,
-                destination = updatedDestination,
-                notes = updatedNotes
+                title = updatedTitle, destination = updatedDestination, notes = updatedNotes
             )
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -73,8 +81,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         btnDeleteTrip.setOnClickListener {
 
-            AlertDialog.Builder(requireContext())
-                .setTitle("Eliminar viaje")
+            AlertDialog.Builder(requireContext()).setTitle("Eliminar viaje")
                 .setMessage("¿Seguro que quieres eliminar este viaje?")
                 .setPositiveButton("Eliminar") { _, _ ->
 
@@ -86,14 +93,12 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
                             parentFragmentManager.popBackStack()
                         }
                     }
-                }
-                .setNegativeButton("Cancelar", null)
-                .show()
+                }.setNegativeButton("Cancelar", null).show()
         }
 
     }
 
-    companion object  {
+    companion object {
 
         fun newInstance(trip: Trip): TripDetailFragment {
             val fragment = TripDetailFragment()
@@ -107,4 +112,12 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         }
     }
 
+    private fun formatDate(date: String): String {
+
+        val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val outputFormat = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+
+        val parsedDate = inputFormat.parse(date)
+        return outputFormat.format(parsedDate!!)
+    }
 }
