@@ -118,6 +118,6 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         val outputFormat = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
 
         val parsedDate = inputFormat.parse(date)
-        return outputFormat.format(parsedDate!!)
+        return parsedDate?.let(outputFormat::format) ?: date
     }
 }

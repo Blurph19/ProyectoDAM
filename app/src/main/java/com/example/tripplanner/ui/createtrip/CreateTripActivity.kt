@@ -93,7 +93,7 @@ class CreateTripActivity : AppCompatActivity() {
         val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
 
             val formattedMonth = selectedMonth + 1
-            val date = "%04d-%02d-%02d".format(selectedYear, selectedMonth, selectedDay)
+            val date = "%04d-%02d-%02d".format(selectedYear, formattedMonth, selectedDay)
 
             target.setText(date)
 

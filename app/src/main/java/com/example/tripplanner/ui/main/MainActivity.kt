@@ -12,6 +12,9 @@ import com.example.tripplanner.data.local.database.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.tripplanner.ui.countdown.CountdownFragment
+import com.example.tripplanner.ui.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity(),
     TripListFragment.OnTripSelectedListener {
@@ -23,6 +26,45 @@ class MainActivity : AppCompatActivity(),
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.BottomNavigation)
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.nav_trips -> {
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, TripListFragment())
+                        .commit()
+
+                    true
+                }
+
+                R.id.nav_countdown -> {
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, CountdownFragment())
+                        .commit()
+
+                    true
+                }
+
+                R.id.nav_profile -> {
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, ProfileFragment())
+                        .commit()
+
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        bottomNavigation.selectedItemId = R.id.nav_trips
+
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -32,11 +74,6 @@ class MainActivity : AppCompatActivity(),
         insertSampleTrips()
         loadTrips()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, TripListFragment())
-                .commit()
-        }
     }
 
     override fun onResume() {
