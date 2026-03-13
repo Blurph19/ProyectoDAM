@@ -29,33 +29,33 @@ class MainActivity : AppCompatActivity(),
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.BottomNavigation)
 
         bottomNavigation.setOnItemSelectedListener { item ->
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
             when (item.itemId) {
-
                 R.id.nav_trips -> {
-
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, TripListFragment())
-                        .commit()
-
+                    if (currentFragment !is TripListFragment) {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, TripListFragment())
+                            .commit()
+                    }
                     true
                 }
 
                 R.id.nav_countdown -> {
-
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, CountdownFragment())
-                        .commit()
-
+                    if (currentFragment !is CountdownFragment) {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, CountdownFragment())
+                            .commit()
+                    }
                     true
                 }
 
                 R.id.nav_profile -> {
-
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, ProfileFragment())
-                        .commit()
-
+                    if (currentFragment !is ProfileFragment) {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, ProfileFragment())
+                            .commit()
+                    }
                     true
                 }
 
