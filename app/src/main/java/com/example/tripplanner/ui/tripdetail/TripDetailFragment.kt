@@ -1,5 +1,6 @@
 package com.example.tripplanner.ui.tripdetail
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -13,11 +14,18 @@ import kotlinx.coroutines.launch
 import androidx.room.Room
 import com.example.tripplanner.data.local.database.AppDatabase
 import androidx.appcompat.app.AlertDialog
+import java.util.Calendar
+import android.view.MotionEvent
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
     private lateinit var trip: Trip
     private lateinit var database: AppDatabase
+
+    private var selectedStartDate: String? = null
+    private var selectedEndDate: String? = null
+
+    private lateinit var tvDates: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,7 +38,20 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
         val etDestination = view.findViewById<TextView>(R.id.etTripDestination)
-        val tvDates = view.findViewById<TextView>(R.id.tvTripDates)
+        tvDates = view.findViewById(R.id.tvTripDates)
+
+        tvDates.setOnTouchListener { v, event ->
+
+            if (event.action == MotionEvent.ACTION_UP) {
+
+                val isLeftSide = event.x < v.width / 2
+
+                openDatePicker(isLeftSide)
+            }
+
+            true
+        }
+
         val etNotes = view.findViewById<TextView>(R.id.etTripNotes)
 
         val btnSaveChanges = view.findViewById<Button>(R.id.btnSaveChanges)
@@ -66,7 +87,11 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             val updatedNotes = etNotes.text.toString()
 
             val updatedTrip = trip.copy(
-                title = updatedTitle, destination = updatedDestination, notes = updatedNotes
+                title = updatedTitle,
+                destination = updatedDestination,
+                startDate = selectedStartDate ?: trip.startDate,
+                endDate = selectedEndDate ?: trip.endDate,
+                notes = updatedNotes
             )
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -109,6 +134,62 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    private fun openDatePicker(isStartDate: Boolean) {
+
+        val calendar = Calendar.getInstance()
+
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+
+                val selectedDate = String.format(
+                    "%04d-%02d-%02d",
+                    year,
+                    month + 1,
+                    day
+                )
+
+                if (isStartDate) {
+                    selectedStartDate = selectedDate
+                } else {
+                    selectedEndDate = selectedDate
+                }
+
+                updateDateText()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePicker.show()
+    }
+
+    private fun updateDateText() {
+
+        val start = selectedStartDate ?: trip.startDate
+        val end = selectedEndDate ?: trip.endDate
+
+        when {
+
+            start != null && end != null -> {
+                tvDates.text = "${formatDate(start)} – ${formatDate(end)}"
+            }
+
+            start != null -> {
+                tvDates.text = "Desde ${formatDate(start)}"
+            }
+
+            end != null -> {
+                tvDates.text = "Hasta ${formatDate(end)}"
+            }
+
+            else -> {
+                tvDates.text = "Sin fechas"
+            }
         }
     }
 

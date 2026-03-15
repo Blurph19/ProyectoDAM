@@ -44,4 +44,11 @@
 
     </FrameLayout>
 
+    <Button
+        android:id="@+id/btnOpenTrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver itinerario"
+        android:layout_marginTop="24dp"/>
+
 </LinearLayout>

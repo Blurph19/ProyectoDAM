@@ -1,14 +1,17 @@
 package com.example.tripplanner.ui.countdown
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.tripplanner.R
 import com.example.tripplanner.data.local.database.AppDatabase
 import androidx.room.Room
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +20,14 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.example.tripplanner.data.local.entity.Trip
+import com.example.tripplanner.ui.tripdetail.TripDetailFragment
 
 class CountdownFragment : Fragment(R.layout.fragment_countdown) {
 
     private lateinit var database: AppDatabase
+
+    private var nextTrip: Trip? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,6 +41,22 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
         val tvTripTitleCount = view.findViewById<TextView>(R.id.tvTripTitleCount)
         val progressCountdown = view.findViewById<CircularProgressIndicator>(R.id.progressCountdown)
         val tvCountdownCenter = view.findViewById<TextView>(R.id.tvCountdownCenter)
+        val btnOpenTrip = view.findViewById<Button>(R.id.btnOpenTrip)
+
+        btnOpenTrip.setOnClickListener {
+
+            val trip = nextTrip
+
+            if (trip != null) {
+
+                val detailFragment = TripDetailFragment.newInstance(trip)
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, detailFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -51,24 +74,46 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
                 tripDate!!.after(today)
             }
 
-            val nextTrip = tripsWithDate.minByOrNull {
-
+            nextTrip = tripsWithDate.minByOrNull {
                 val tripDate = inputFormat.parse(it.startDate!!)
                 tripDate!!.time
             }
 
-            if (nextTrip !=null) {
+            val trip = nextTrip
+
+            if (trip !=null) {
 
                 activity?.runOnUiThread {
 
-                    tvTripTitleCount.text = nextTrip.title
+                    tvTripTitleCount.text = trip.title
 
-                    val tripDate = inputFormat.parse(nextTrip.startDate!!)
+                    val tripDate = inputFormat.parse(trip.startDate!!)
                     val today = Date()
 
                     val diff = tripDate!!.time - today.time
 
                     val days = TimeUnit.MILLISECONDS.toDays(diff)
+                        when {
+                            days > 14 -> {
+                                progressCountdown.setIndicatorColor(
+                                    ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
+                                )
+                            }
+
+                            days in 7..14 -> {
+                                progressCountdown.setIndicatorColor(
+                                    ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark)
+                                )
+                            }
+
+                            else -> {
+                                progressCountdown.setIndicatorColor(
+                                    ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
+                                )
+                            }
+                        }
+
+
                     val hours = TimeUnit.MILLISECONDS.toHours(diff) % 24
 
                     tvCountdownCenter.text = "${days}d\n${hours}h"
@@ -78,10 +123,14 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
                     progressCountdown.progress = progress
                 }
 
-            }else {
+            } else {
 
                 activity?.runOnUiThread {
-                    tvTripTitleCount.text = "No hay viajes"
+                    tvTripTitleCount.text = "No hay viajes futuros"
+
+                    tvCountdownCenter.text = "-"
+
+                    progressCountdown.progress = 0
                 }
             }
 
