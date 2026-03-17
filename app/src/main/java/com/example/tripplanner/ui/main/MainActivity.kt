@@ -69,7 +69,9 @@ class MainActivity : AppCompatActivity(),
             applicationContext,
             AppDatabase::class.java,
             "trip_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         insertSampleTrips()
         loadTrips()

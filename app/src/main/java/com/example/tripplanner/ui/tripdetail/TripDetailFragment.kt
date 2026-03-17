@@ -37,7 +37,9 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         database = Room.databaseBuilder(
             requireContext(), AppDatabase::class.java, "trip_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
         val etDestination = view.findViewById<TextView>(R.id.etTripDestination)
