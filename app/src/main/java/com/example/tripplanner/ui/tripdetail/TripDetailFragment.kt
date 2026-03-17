@@ -16,6 +16,10 @@ import com.example.tripplanner.data.local.database.AppDatabase
 import androidx.appcompat.app.AlertDialog
 import java.util.Calendar
 import android.view.MotionEvent
+import java.util.Date
+import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
@@ -25,7 +29,6 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
     private var selectedStartDate: String? = null
     private var selectedEndDate: String? = null
 
-    private lateinit var tvDates: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,53 +41,77 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         val etTitle = view.findViewById<TextView>(R.id.etTripTitle)
         val etDestination = view.findViewById<TextView>(R.id.etTripDestination)
-        tvDates = view.findViewById(R.id.tvTripDates)
-
-        tvDates.setOnTouchListener { v, event ->
-
-            if (event.action == MotionEvent.ACTION_UP) {
-
-                val isLeftSide = event.x < v.width / 2
-
-                openDatePicker(isLeftSide)
-            }
-
-            true
-        }
-
         val etNotes = view.findViewById<TextView>(R.id.etTripNotes)
+
+        val etStartDate = view.findViewById<TextView>(R.id.etStartDate)
+        val etEndDate = view.findViewById<TextView>(R.id.etEndDate)
 
         val btnSaveChanges = view.findViewById<Button>(R.id.btnSaveChanges)
         val btnDeleteTrip = view.findViewById<Button>(R.id.btnDeleteTrip)
 
 
+        // Cargar datos actuales
         etTitle.setText(trip.title)
         etDestination.setText(trip.destination)
         etNotes.setText(trip.notes)
 
-        when {
-            trip.startDate != null && trip.endDate != null -> {
-                tvDates.text = "${formatDate(trip.startDate!!)} – ${formatDate(trip.endDate!!)}"
-            }
+        trip.startDate?.let {
+            etStartDate.setText(formatDate(it))
+        }
 
-            trip.startDate != null -> {
-                tvDates.text = "Desde ${formatDate(trip.startDate!!)}"
-            }
+        trip.endDate?.let {
+            etEndDate.setText(formatDate(it))
+        }
 
-            trip.endDate != null -> {
-                tvDates.text = "Hasta ${formatDate(trip.endDate!!)}"
-            }
 
-            else -> {
-                tvDates.visibility = View.GONE
+        // Selector fecha inicio
+        etStartDate.setOnClickListener {
+
+            val currentDate = selectedStartDate ?: trip.startDate
+
+            openDatePicker(currentDate) { selectedDate ->
+                selectedStartDate = selectedDate
+                etStartDate.setText(formatDate(selectedDate))
             }
         }
 
+        // Selector fecha fin
+        etEndDate.setOnClickListener {
+
+            val currentDate = selectedEndDate ?: trip.endDate
+
+            openDatePicker(currentDate) { selectedDate ->
+                selectedEndDate = selectedDate
+                etEndDate.setText(formatDate(selectedDate))
+            }
+        }
+
+        // Guardar Cambios
         btnSaveChanges.setOnClickListener {
 
             val updatedTitle = etTitle.text.toString()
             val updatedDestination = etDestination.text.toString()
             val updatedNotes = etNotes.text.toString()
+
+            val start = selectedStartDate ?: trip.startDate
+            val end = selectedEndDate ?: trip.endDate
+
+            if (start != null && end != null) {
+
+                val startDate = parseDate(start)
+                val endDate = parseDate(end)
+
+                if (startDate != null && endDate != null && endDate.before(startDate)) {
+
+                    Toast.makeText(
+                        requireContext(),
+                        "La fecha de fin no puede ser anterior a la de inicio",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    return@setOnClickListener
+                }
+            }
 
             val updatedTrip = trip.copy(
                 title = updatedTitle,
@@ -104,6 +131,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             }
         }
 
+        //Eliminar viaje
         btnDeleteTrip.setOnClickListener {
 
             AlertDialog.Builder(requireContext()).setTitle("Eliminar viaje")
@@ -123,23 +151,18 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
     }
 
-    companion object {
-
-        fun newInstance(trip: Trip): TripDetailFragment {
-            val fragment = TripDetailFragment()
-
-            val bundle = Bundle().apply {
-                putParcelable("trip", trip)
-            }
-
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
-    private fun openDatePicker(isStartDate: Boolean) {
+    private fun openDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
 
         val calendar = Calendar.getInstance()
+
+        if (initialDate != null) {
+
+            val parsedDate = parseDate(initialDate)
+
+            if (parsedDate != null) {
+                calendar.time = parsedDate
+            }
+        }
 
         val datePicker = DatePickerDialog(
             requireContext(),
@@ -152,13 +175,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
                     day
                 )
 
-                if (isStartDate) {
-                    selectedStartDate = selectedDate
-                } else {
-                    selectedEndDate = selectedDate
-                }
-
-                updateDateText()
+                onDateSelected(selectedDate)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -168,31 +185,6 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         datePicker.show()
     }
 
-    private fun updateDateText() {
-
-        val start = selectedStartDate ?: trip.startDate
-        val end = selectedEndDate ?: trip.endDate
-
-        when {
-
-            start != null && end != null -> {
-                tvDates.text = "${formatDate(start)} – ${formatDate(end)}"
-            }
-
-            start != null -> {
-                tvDates.text = "Desde ${formatDate(start)}"
-            }
-
-            end != null -> {
-                tvDates.text = "Hasta ${formatDate(end)}"
-            }
-
-            else -> {
-                tvDates.text = "Sin fechas"
-            }
-        }
-    }
-
     private fun formatDate(date: String): String {
 
         val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
@@ -200,5 +192,26 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         val parsedDate = inputFormat.parse(date)
         return parsedDate?.let(outputFormat::format) ?: date
+    }
+
+    private fun parseDate(date: String): Date? {
+
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return format.parse(date)
+
+    }
+
+    companion object {
+
+        fun newInstance(trip: Trip): TripDetailFragment {
+            val fragment = TripDetailFragment()
+
+            val bundle = Bundle().apply {
+                putParcelable("trip", trip)
+            }
+
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }
