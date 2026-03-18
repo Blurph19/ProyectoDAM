@@ -12,6 +12,7 @@
     tools:context=".ui.itinerary.ItineraryFragment"
     android:padding="24dp">
 
+
     <!-- DESTINO -->
     <TextView
         android:id="@+id/labelDestination"

@@ -13,11 +13,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Título del viaje"
+        app:endIconMode="custom"
+        app:endIconDrawable="@android:drawable/ic_menu_edit"
         app:boxBackgroundMode="outline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-    
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTripTitle"
             android:layout_width="match_parent"

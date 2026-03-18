@@ -13,6 +13,9 @@ import com.example.tripplanner.data.local.database.AppDatabase
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
@@ -50,6 +53,24 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             }
         }.attach()
 
+        // Edit title
+        etTitle.setOnFocusChangeListener { _, hasFocus ->
+
+            if (!hasFocus) {
+                val newTitle = etTitle.text.toString()
+
+                if (newTitle != trip.title) {
+
+                    val updatedTrip = trip.copy(title = newTitle)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        database.tripDao().updateTrip(updatedTrip)
+
+                        trip = updatedTrip
+                    }
+                }
+            }
+        }
     }
 
     companion object {
