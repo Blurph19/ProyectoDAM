@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.tripplanner.data.local.entity.Trip
 
 class ChecklistFragment : Fragment(R.layout.fragment_checklist) {
 
@@ -22,8 +23,12 @@ class ChecklistFragment : Fragment(R.layout.fragment_checklist) {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChecklistAdapter
 
+    private lateinit var trip: Trip
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        trip = requireArguments().getParcelable("trip")!!
 
         recyclerView = view.findViewById(R.id.recyclerChecklist)
 
@@ -69,7 +74,7 @@ class ChecklistFragment : Fragment(R.layout.fragment_checklist) {
                         CoroutineScope(Dispatchers.IO).launch {
 
                             val item = ChecklistItem(
-                                tripId = 1,
+                                tripId = trip.id,
                                 name = text
                             )
 
@@ -88,11 +93,26 @@ class ChecklistFragment : Fragment(R.layout.fragment_checklist) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            val items = database.checklistDao().getItemsForTrip(1)
+            val items = database.checklistDao().getItemsForTrip(trip.id)
 
             activity?.runOnUiThread {
                 adapter.updateItems(items)
             }
+        }
+    }
+
+    companion object {
+
+        fun newInstance(trip: Trip): ChecklistFragment {
+
+            val fragment = ChecklistFragment()
+
+            val bundle = Bundle()
+            bundle.putParcelable("trip", trip)
+
+            fragment.arguments = bundle
+
+            return fragment
         }
     }
 }
