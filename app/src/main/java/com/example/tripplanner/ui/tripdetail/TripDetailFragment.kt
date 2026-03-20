@@ -41,7 +41,16 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPagerTrip)
 
         val adapter = TripDetailPagerAdapter(this, trip)
+
         viewPager.adapter = adapter
+
+        viewPager.setPageTransformer { page, position ->
+
+            val absPos = kotlin.math.abs(position)
+
+            page.alpha = 0.7f + (1 - absPos) * 0.3f
+            page.scaleY = 0.9f + (1 - absPos) * 0.1f
+        }
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 
