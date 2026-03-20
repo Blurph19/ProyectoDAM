@@ -18,7 +18,7 @@ class TripDetailPagerAdapter(fragment: Fragment,
 
             0 -> ItineraryFragment.newInstance(trip)
 
-            1 -> BudgetFragment()
+            1 -> BudgetFragment.newInstance(trip)
 
             2 -> ChecklistFragment.newInstance(trip)
 
