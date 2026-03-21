@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.app.AlertDialog
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -21,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 class BudgetFragment : Fragment (R.layout.fragment_budget) {
 
@@ -86,8 +89,21 @@ class BudgetFragment : Fragment (R.layout.fragment_budget) {
                 .setView(layout)
                 .setPositiveButton("Añadir") { _, _ ->
 
-                    val title = inputTitle.text.toString()
-                    val amount = inputAmount.text.toString().toDoubleOrNull() ?: 0.0
+                    val title = inputTitle.text.toString().trim()
+                    val amountText = inputAmount.text.toString().trim()
+
+                    if (title.isEmpty() || amountText.isEmpty()) {
+
+                        Toast.makeText(
+                            requireContext(),
+                            "Introduce concepto y cantidad",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@setPositiveButton
+                    }
+
+                    val amount = amountText.toDouble()
 
                     val expense = Expense(
                         tripId = trip.id,
@@ -117,10 +133,15 @@ class BudgetFragment : Fragment (R.layout.fragment_budget) {
 
                 adapter.updateExpenses(expenses)
 
-                val total = expenses.sumOf { it.amount }
 
                 val tvTotal = view?.findViewById<TextView>(R.id.tvTotal)
-                tvTotal?.text = "Total: ${total}€"
+
+                val total = expenses.sumOf { it.amount }
+
+                val formattedTotal =
+                    NumberFormat.getCurrencyInstance(Locale("es", "ES")).format(total)
+
+                tvTotal?.text = "Total: $formattedTotal"
             }
         }
     }

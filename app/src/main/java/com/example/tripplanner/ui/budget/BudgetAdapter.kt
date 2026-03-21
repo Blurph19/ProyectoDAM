@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tripplanner.data.local.entity.Expense
 import com.example.tripplanner.R
+import java.text.NumberFormat
+import java.util.Locale
 
 class BudgetAdapter(
     private var expenses: List<Expense>,
@@ -33,7 +35,9 @@ class BudgetAdapter(
         val expense = expenses[position]
 
         holder.title.text = expense.title
-        holder.amount.text = String.format("%.2f€", expense.amount)
+
+        val formatted = NumberFormat.getCurrencyInstance(Locale("es", "ES")).format(expense.amount)
+        holder.amount.text = formatted
 
 
         holder.itemView.setOnLongClickListener {

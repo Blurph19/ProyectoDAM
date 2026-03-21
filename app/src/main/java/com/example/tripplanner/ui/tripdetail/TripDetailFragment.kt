@@ -54,10 +54,23 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 
-            tab.text = when(position) {
-                0 -> "Itinerario"
-                1 -> "Presupuesto"
-                2 -> "Checklist"
+            when(position) {
+
+                0 -> {
+                    tab.text = "Itinerario"
+                    tab.setIcon(android.R.drawable.ic_menu_mapmode)
+                }
+
+                1 -> {
+                    tab.text = "Presupuesto"
+                    tab.setIcon(android.R.drawable.ic_menu_agenda)
+                }
+
+                2 -> {
+                    tab.text = "Checklist"
+                    tab.setIcon(android.R.drawable.checkbox_on_background)
+                }
+
                 else -> ""
             }
         }.attach()

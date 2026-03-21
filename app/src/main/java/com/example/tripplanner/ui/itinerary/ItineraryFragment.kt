@@ -123,6 +123,9 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
                 database.tripDao().updateTrip(updatedTrip)
 
                 activity?.runOnUiThread {
+                    Toast.makeText(requireContext(),
+                        "Cambios guardados",
+                        Toast.LENGTH_SHORT).show()
                     parentFragmentManager.popBackStack()
                 }
             }
