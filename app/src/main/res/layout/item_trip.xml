@@ -33,4 +33,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="4dp"/>
 
+    <TextView
+        android:id="@+id/tvTripStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRÓXIMO"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:background="@drawable/status_badge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTripName"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

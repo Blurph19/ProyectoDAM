@@ -16,5 +16,7 @@ data class Trip (
     val destination: String,
     val startDate: String?,
     val endDate: String?,
-    val notes: String?
+    val notes: String?,
+
+    val status: String = "Pendiente"
 ) : Parcelable

@@ -11,7 +11,7 @@ import com.example.tripplanner.data.local.entity.Expense
 
 @Database(
     entities = [Trip::class, ChecklistItem::class, Expense::class],
-    version = 3
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 

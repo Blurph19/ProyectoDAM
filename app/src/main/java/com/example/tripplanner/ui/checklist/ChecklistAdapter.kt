@@ -9,7 +9,8 @@ import com.example.tripplanner.data.local.entity.ChecklistItem
 
 class ChecklistAdapter(
     private var items: List<ChecklistItem>,
-    private val onItemChecked: (ChecklistItem, Boolean) -> Unit
+    private val onItemChecked: (ChecklistItem, Boolean) -> Unit,
+    private val onLongClick: (ChecklistItem) -> Unit
 ) : RecyclerView.Adapter<ChecklistAdapter.ViewHolder>() {
 
     class ViewHolder(val checkBox: CheckBox) : RecyclerView.ViewHolder(checkBox)
@@ -31,6 +32,11 @@ class ChecklistAdapter(
 
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             onItemChecked(item, isChecked)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick(item)
+            true
         }
     }
 

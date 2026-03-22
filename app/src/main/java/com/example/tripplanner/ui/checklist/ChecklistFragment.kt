@@ -34,15 +34,37 @@ class ChecklistFragment : Fragment(R.layout.fragment_checklist) {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = ChecklistAdapter(emptyList()) { item, checked ->
+        adapter = ChecklistAdapter(
+            emptyList(),
 
-            CoroutineScope(Dispatchers.IO).launch {
+            { item, checked ->
 
-                val updatedItem = item.copy(isChecked = checked)
+                CoroutineScope(Dispatchers.IO).launch {
 
-                database.checklistDao().updateItem(updatedItem)
+                    val updatedItem = item.copy(isChecked = checked)
+
+                    database.checklistDao().updateItem(updatedItem)
+                }
+            },
+
+            { item ->
+
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Eliminar item")
+                    .setMessage("¿Estás seguro de que quieres eliminar este elemento?")
+                    .setPositiveButton("Eliminar") { _, _ ->
+
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            database.checklistDao().deleteItem(item)
+
+                            loadChecklist()
+                        }
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
             }
-        }
+        )
 
         recyclerView.adapter = adapter
 
