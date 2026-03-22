@@ -9,12 +9,17 @@ import com.example.tripplanner.ui.trips.TripListFragment
 import com.example.tripplanner.data.local.entity.Trip
 import androidx.room.Room
 import com.example.tripplanner.data.local.database.AppDatabase
+import com.example.tripplanner.data.local.entity.ChecklistItem
+import com.example.tripplanner.data.local.entity.Expense
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.tripplanner.ui.countdown.CountdownFragment
 import com.example.tripplanner.ui.profile.ProfileFragment
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(),
     TripListFragment.OnTripSelectedListener {
@@ -110,31 +115,114 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun insertSampleTrips() {
+
         CoroutineScope(Dispatchers.IO).launch {
 
             val existingTrips = database.tripDao().getAllTrips()
 
             if (existingTrips.isEmpty()) {
 
+                val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+
+                // 1️⃣ FINDE EN DUBLIN → PRÓXIMO (en 30 días)
+
+                val startDublin = Calendar.getInstance()
+                startDublin.add(Calendar.DAY_OF_YEAR, 30)
+
+                val endDublin = Calendar.getInstance()
+                endDublin.add(Calendar.DAY_OF_YEAR, 33)
+
                 val trip1 = Trip(
-                    title = "Viaje a Roma",
-                    destination = "Roma",
-                    startDate = null,
-                    endDate = null,
-                    notes = "Visitar el Coliseo"
+                    title = "Finde en Dublin",
+                    destination = "Irlanda",
+                    startDate = formatter.format(startDublin.time),
+                    endDate = formatter.format(endDublin.time),
+                    notes = "Primer viaje corto para conocer la ciudad"
                 )
+
+                // 2️⃣ ESCAPADA A ROMA → EN CURSO
+
+                val startRome = Calendar.getInstance()
+                startRome.add(Calendar.DAY_OF_YEAR, -1)
+
+                val endRome = Calendar.getInstance()
+                endRome.add(Calendar.DAY_OF_YEAR, 3)
 
                 val trip2 = Trip(
-                    title = "Escapada a París",
-                    destination = "París",
-                    startDate = null,
-                    endDate = null,
-                    notes = "Ver la Torre Eiffel"
+                    title = "Escapada a Roma",
+                    destination = "Italia",
+                    startDate = formatter.format(startRome.time),
+                    endDate = formatter.format(endRome.time),
+                    notes = "Visitar el Coliseo y el Vaticano"
                 )
 
-                database.tripDao().insertTrip(trip1)
-                database.tripDao().insertTrip(trip2)
+                // 3️⃣ VIAJE A PARÍS → FINALIZADO
 
+                val startParis = Calendar.getInstance()
+                startParis.add(Calendar.DAY_OF_YEAR, -40)
+
+                val endParis = Calendar.getInstance()
+                endParis.add(Calendar.DAY_OF_YEAR, -35)
+
+                val trip3 = Trip(
+                    title = "Viaje a París",
+                    destination = "Francia",
+                    startDate = formatter.format(startParis.time),
+                    endDate = formatter.format(endParis.time),
+                    notes = "Museos y paseo por el Sena"
+                )
+
+                // 4️⃣ ROADTRIP DESDE REIKIAVIK → PENDIENTE (sin fechas)
+
+                val trip4 = Trip(
+                    title = "Roadtrip desde Reikiavik",
+                    destination = "Islandia",
+                    startDate = null,
+                    endDate = null,
+                    notes = "Planificar ruta por Islandia"
+                )
+
+                val id1 = database.tripDao().insertTrip(trip1)
+                val id2 = database.tripDao().insertTrip(trip2)
+                val id3 = database.tripDao().insertTrip(trip3)
+                val id4 = database.tripDao().insertTrip(trip4)
+
+                // CHECKLIST DEMO
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id1.toInt(), name = "Pasaporte", isChecked = true)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id1.toInt(), name = "Maleta pequeña", isChecked = false)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id2.toInt(), name = "Entradas Coliseo", isChecked = true)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id2.toInt(), name = "Reservar hotel", isChecked = false)
+                )
+
+                // PRESUPUESTO DEMO
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id1.toInt(), title = "Vuelo", amount = 120.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id1.toInt(), title = "Hotel", amount = 200.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id2.toInt(), title = "Hotel", amount = 320.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id2.toInt(), title = "Comida", amount = 120.0)
+                )
             }
         }
     }

@@ -11,7 +11,7 @@ import com.example.tripplanner.data.local.entity.Trip
 interface TripDao {
 
     @Insert
-    suspend fun insertTrip(trip: Trip)
+    suspend fun insertTrip(trip: Trip): Long
 
     @Query("SELECT * FROM Trip")
     suspend fun getAllTrips(): List<Trip>
