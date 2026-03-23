@@ -12,14 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TripPlanner">
 
-        <!-- Auth: punto de autenticación inicial -->
-        <activity
-            android:name=".ui.auth.AuthActivity"
-            android:exported="false" />
-
         <!-- Splash: punto de entrada de la app -->
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.auth.AuthActivity"
+            android:theme="@style/Theme.TripPlanner.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,7 @@
 package com.example.tripplanner.ui.auth
 
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import android.content.Intent
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import com.example.tripplanner.ui.main.MainActivity
 
 class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_auth)
