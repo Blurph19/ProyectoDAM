@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TripPlanner">
 
-        <!-- Splash: punto de entrada de la app -->
+        <!-- Splash/Login  -->
         <activity
             android:name=".ui.auth.AuthActivity"
             android:theme="@style/Theme.TripPlanner.Splash"
@@ -24,7 +24,12 @@
             </intent-filter>
         </activity>
 
-        <!-- Activity principal (contenedor de fragments) -->
+        <!-- Registro -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false" />
+
+        <!-- Main (contenedor de fragments) -->
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="false"> </activity>

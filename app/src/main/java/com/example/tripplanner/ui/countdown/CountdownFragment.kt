@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.example.tripplanner.data.local.entity.Trip
 import com.example.tripplanner.ui.tripdetail.TripDetailFragment
+import com.example.tripplanner.utils.SessionManager
 
 class CountdownFragment : Fragment(R.layout.fragment_countdown) {
 
@@ -60,7 +61,8 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            val trips = database.tripDao().getAllTrips()
+            val userId = SessionManager.getUserId(requireContext())
+            val trips = database.tripDao().getTripsByUser(userId)
 
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 

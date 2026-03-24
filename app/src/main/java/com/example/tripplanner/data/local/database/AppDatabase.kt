@@ -7,14 +7,17 @@ import com.example.tripplanner.data.local.entity.Trip
 import com.example.tripplanner.data.local.entity.ChecklistItem
 import com.example.tripplanner.data.local.dao.ChecklistDao
 import com.example.tripplanner.data.local.dao.ExpenseDao
+import com.example.tripplanner.data.local.dao.UserDao
 import com.example.tripplanner.data.local.entity.Expense
+import com.example.tripplanner.data.local.entity.User
 
 @Database(
-    entities = [Trip::class, ChecklistItem::class, Expense::class],
-    version = 4
+    entities = [User::class, Trip::class, ChecklistItem::class, Expense::class],
+    version = 7
 )
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun userDao(): UserDao
     abstract fun tripDao(): TripDao
     abstract fun checklistDao(): ChecklistDao
     abstract fun expenseDao(): ExpenseDao

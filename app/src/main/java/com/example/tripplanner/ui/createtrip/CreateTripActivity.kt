@@ -10,6 +10,7 @@ import com.example.tripplanner.R
 import com.example.tripplanner.data.local.database.AppDatabase
 import androidx.room.Room
 import com.example.tripplanner.data.local.entity.Trip
+import com.example.tripplanner.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,7 +54,10 @@ class CreateTripActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val userId = SessionManager.getUserId(this)
+
             val trip = Trip(
+                userId = userId,
                 title = title,
                 destination = destination,
                 startDate = startDate,

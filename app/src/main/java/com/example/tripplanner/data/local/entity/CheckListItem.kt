@@ -4,8 +4,19 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.tripplanner.data.local.entity.Trip
 
-@Entity(tableName = "checklist_items")
+@Entity(
+    tableName = "checklist_items",
+    foreignKeys = [
+        ForeignKey(
+            entity = Trip::class,
+            parentColumns = ["id"],
+            childColumns = ["tripId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 
 data class ChecklistItem(
     @PrimaryKey(autoGenerate = true)

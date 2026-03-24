@@ -13,8 +13,8 @@ interface TripDao {
     @Insert
     suspend fun insertTrip(trip: Trip): Long
 
-    @Query("SELECT * FROM Trip")
-    suspend fun getAllTrips(): List<Trip>
+    @Query("SELECT * FROM Trip WHERE userId = :userId")
+    suspend fun getTripsByUser(userId: Int): List<Trip>
 
     @Update
     suspend fun updateTrip(trip: Trip)

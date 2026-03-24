@@ -20,6 +20,7 @@ import com.example.tripplanner.ui.profile.ProfileFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.example.tripplanner.utils.SessionManager
 
 class MainActivity : AppCompatActivity(),
     TripListFragment.OnTripSelectedListener {
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        val userId = SessionManager.getUserId(this)
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.BottomNavigation)
 
@@ -102,7 +105,9 @@ class MainActivity : AppCompatActivity(),
     fun loadTrips() {
         CoroutineScope(Dispatchers.IO).launch {
 
-            val trips = database.tripDao().getAllTrips()
+            val userId = SessionManager.getUserId(this@MainActivity)
+
+            val trips = database.tripDao().getTripsByUser(userId)
 
             runOnUiThread {
 
@@ -118,7 +123,9 @@ class MainActivity : AppCompatActivity(),
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            val existingTrips = database.tripDao().getAllTrips()
+            val userId = SessionManager.getUserId(this@MainActivity)
+
+            val existingTrips = database.tripDao().getTripsByUser(userId)
 
             if (existingTrips.isEmpty()) {
 
@@ -134,6 +141,7 @@ class MainActivity : AppCompatActivity(),
                 endDublin.add(Calendar.DAY_OF_YEAR, 33)
 
                 val trip1 = Trip(
+                    userId = userId,
                     title = "Finde en Dublin",
                     destination = "Irlanda",
                     startDate = formatter.format(startDublin.time),
@@ -150,6 +158,7 @@ class MainActivity : AppCompatActivity(),
                 endRome.add(Calendar.DAY_OF_YEAR, 3)
 
                 val trip2 = Trip(
+                    userId = userId,
                     title = "Escapada a Roma",
                     destination = "Italia",
                     startDate = formatter.format(startRome.time),
@@ -166,6 +175,7 @@ class MainActivity : AppCompatActivity(),
                 endParis.add(Calendar.DAY_OF_YEAR, -35)
 
                 val trip3 = Trip(
+                    userId = userId,
                     title = "Viaje a París",
                     destination = "Francia",
                     startDate = formatter.format(startParis.time),
@@ -176,6 +186,7 @@ class MainActivity : AppCompatActivity(),
                 // 4️⃣ ROADTRIP DESDE REIKIAVIK → PENDIENTE (sin fechas)
 
                 val trip4 = Trip(
+                    userId = userId,
                     title = "Roadtrip desde Reikiavik",
                     destination = "Islandia",
                     startDate = null,
