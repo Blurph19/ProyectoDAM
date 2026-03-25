@@ -1,5 +1,6 @@
 package com.example.tripplanner.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,7 @@ import com.example.tripplanner.data.local.entity.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.jvm.java
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -32,6 +34,8 @@ class RegisterActivity : AppCompatActivity() {
         val email = findViewById<EditText>(R.id.etEmail)
         val password = findViewById<EditText>(R.id.etPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val btnBackToLogin = findViewById<Button>(R.id.tvBackToLogin)
+
 
         btnRegister.setOnClickListener {
 
@@ -50,6 +54,14 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
             }
+        }
+
+        btnBackToLogin.setOnClickListener {
+
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            finish()
         }
     }
 }

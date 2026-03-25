@@ -95,25 +95,23 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
                     val diff = tripDate!!.time - today.time
 
                     val days = TimeUnit.MILLISECONDS.toDays(diff)
-                        when {
-                            days > 14 -> {
-                                progressCountdown.setIndicatorColor(
-                                    ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
-                                )
-                            }
-
-                            days in 7..14 -> {
-                                progressCountdown.setIndicatorColor(
-                                    ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark)
-                                )
-                            }
-
-                            else -> {
-                                progressCountdown.setIndicatorColor(
-                                    ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
-                                )
-                            }
+                    when (days.toInt()) {
+                        in 15..Int.MAX_VALUE -> { // Días mayores a 14
+                            progressCountdown.setIndicatorColor(
+                                ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
+                            )
                         }
+                        in 7..14 -> { // Rango correcto (ya no sale en rojo)
+                            progressCountdown.setIndicatorColor(
+                                ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark)
+                            )
+                        }
+                        else -> { // Menos de 7 días (caso 'else' corregido)
+                            progressCountdown.setIndicatorColor(
+                                ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
+                            )
+                        }
+                    }
 
 
                     val hours = TimeUnit.MILLISECONDS.toHours(diff) % 24
