@@ -1,13 +1,19 @@
 package com.example.tripplanner.ui.trips
 
 import android.graphics.Color
+import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tripplanner.R
 import com.example.tripplanner.data.local.entity.Trip
+import com.example.tripplanner.ui.tripdetail.TripDetailFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,6 +29,10 @@ class TripAdapter(
         val tvTripSubtitle: TextView = itemView.findViewById(R.id.tvTripSubtitle)
 
         val tvStatus: TextView = itemView.findViewById(R.id.tvTripStatus)
+
+        val imgTrip: ImageView = itemView.findViewById(R.id.imgTrip)
+
+        val btnTripDetails: Button = itemView.findViewById<Button>(R.id.btnTripDetails)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
@@ -37,8 +47,28 @@ class TripAdapter(
 
         holder.tvTripSubtitle.text = trip.destination
 
-        holder.itemView.setOnClickListener {
-            onTripClick(trip)
+        if (trip.imageUri != null) {
+            holder.imgTrip.setImageURI(Uri.parse(trip.imageUri))
+        } else {
+            holder.imgTrip.setImageResource(R.drawable.travel_placeholder)
+        }
+
+
+        holder.btnTripDetails.setOnClickListener {
+
+            val detailFragment = TripDetailFragment()
+
+            val bundle = Bundle()
+            bundle.putParcelable("trip", trip)
+
+            detailFragment.arguments = bundle
+
+            (holder.itemView.context as AppCompatActivity)
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, detailFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())

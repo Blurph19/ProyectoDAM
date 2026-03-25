@@ -22,6 +22,7 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
     private lateinit var trip: Trip
     private lateinit var database: AppDatabase
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -108,4 +109,5 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             return fragment
         }
     }
+
 }
