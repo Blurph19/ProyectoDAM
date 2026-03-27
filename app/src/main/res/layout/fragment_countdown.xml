@@ -12,9 +12,9 @@
         android:id="@+id/tvTripTitleCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="56dp"
         android:text="Próximo viaje a París"
-        android:textColor="@color/primary_app"
+        android:textColor="@color/secondary_app"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -59,14 +59,35 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvCountdownCenter"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12"
-            android:textColor="#333333"
-            android:textSize="56sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvCountdownCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4d 23h"
+                android:textColor="#333333"
+                android:textSize="42sp"
+                android:includeFontPadding="false"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PARA EL VIAJE"
+                android:textColor="#9E9E9E"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:includeFontPadding="false"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"/>
+
+        </LinearLayout>/>
 
     </LinearLayout>
 

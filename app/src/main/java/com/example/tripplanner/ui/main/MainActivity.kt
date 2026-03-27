@@ -1,6 +1,7 @@
 package com.example.tripplanner.ui.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tripplanner.R
@@ -36,11 +37,16 @@ class MainActivity : AppCompatActivity(),
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.BottomNavigation)
 
+        val appBar = findViewById<com.google.android.material.appbar.AppBarLayout>(R.id.appBarHome)
+
         bottomNavigation.setOnItemSelectedListener { item ->
             val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
             when (item.itemId) {
                 R.id.nav_trips -> {
+
+                    appBar.visibility = View.VISIBLE
+
                     if (currentFragment !is TripListFragment) {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer, TripListFragment())
@@ -50,6 +56,9 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.nav_countdown -> {
+
+                    appBar.visibility = View.GONE
+
                     if (currentFragment !is CountdownFragment) {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer, CountdownFragment())
@@ -59,6 +68,9 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.nav_profile -> {
+
+                    appBar.visibility = View.GONE
+
                     if (currentFragment !is ProfileFragment) {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer, ProfileFragment())
@@ -72,6 +84,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         bottomNavigation.selectedItemId = R.id.nav_trips
+        appBar.visibility = View.VISIBLE
+
 
         database = Room.databaseBuilder(
             applicationContext,

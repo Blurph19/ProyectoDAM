@@ -1,6 +1,7 @@
 package com.example.tripplanner.ui.countdown
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -96,20 +97,14 @@ class CountdownFragment : Fragment(R.layout.fragment_countdown) {
 
                     val days = TimeUnit.MILLISECONDS.toDays(diff)
                     when (days.toInt()) {
-                        in 15..Int.MAX_VALUE -> { // Días mayores a 14
-                            progressCountdown.setIndicatorColor(
-                                ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
-                            )
+                        in 15..Int.MAX_VALUE -> {
+                                progressCountdown.setIndicatorColor(Color.parseColor("#42A5F5"))
                         }
-                        in 7..14 -> { // Rango correcto (ya no sale en rojo)
-                            progressCountdown.setIndicatorColor(
-                                ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark)
-                            )
+                        in 7..14 -> {
+                                progressCountdown.setIndicatorColor(Color.parseColor("#FFA726"))
                         }
-                        else -> { // Menos de 7 días (caso 'else' corregido)
-                            progressCountdown.setIndicatorColor(
-                                ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
-                            )
+                        else -> {
+                                progressCountdown.setIndicatorColor(Color.parseColor("#EF5350"))
                         }
                     }
 

@@ -50,7 +50,7 @@ class TripAdapter(
         if (trip.imageUri != null) {
             holder.imgTrip.setImageURI(Uri.parse(trip.imageUri))
         } else {
-            holder.imgTrip.setImageResource(R.drawable.travel_placeholder)
+            holder.imgTrip.setImageResource(R.drawable.ic_travel_placeholder)
         }
 
 

@@ -1,9 +1,9 @@
 package com.example.tripplanner.ui.tripdetail
 
-import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.tripplanner.R
@@ -53,26 +53,28 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             page.scaleY = 0.9f + (1 - absPos) * 0.1f
         }
 
+        val imgTripHeader = view.findViewById<ImageView>(R.id.imgTripHeader)
+
+        if (trip.imageUri != null) {
+            imgTripHeader.setImageURI(Uri.parse(trip.imageUri))
+        } else {
+            imgTripHeader.setImageResource(R.drawable.ic_travel_placeholder)
+        }
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-
             when(position) {
-
                 0 -> {
                     tab.text = "Itinerario"
-                    tab.setIcon(android.R.drawable.ic_menu_mapmode)
+                    tab.setIcon(R.drawable.ic_tab_map)
                 }
-
                 1 -> {
                     tab.text = "Presupuesto"
-                    tab.setIcon(android.R.drawable.ic_menu_agenda)
+                    tab.setIcon(R.drawable.ic_tab_budget)
                 }
-
                 2 -> {
                     tab.text = "Checklist"
-                    tab.setIcon(android.R.drawable.checkbox_on_background)
+                    tab.setIcon(R.drawable.ic_tab_checklist)
                 }
-
-                else -> ""
             }
         }.attach()
 
