@@ -17,20 +17,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:src="@drawable/ic_travel_placeholder" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="70dp"
             android:layout_gravity="bottom"
             android:background="@drawable/trip_gradient" />
+
+        <ImageButton
+            android:id="@+id/btnEditPhoto"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|top"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_menu_camera"
+            android:contentDescription="Cambiar foto de viaje"
+            android:elevation="4dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTripTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginHorizontal="16dp"
             app:hintEnabled="false"
             app:boxBackgroundMode="none"
@@ -44,7 +55,7 @@
             android:paddingStart="4dp"
             android:text="Finde en Dublín"
             android:textColor="@android:color/white"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:inputType="textCapSentences"/>
         </com.google.android.material.textfield.TextInputLayout>

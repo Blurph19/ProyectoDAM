@@ -58,6 +58,17 @@ class TripListFragment : Fragment(R.layout.fragment_trip_list) {
     }
 
     fun updateTrips(trips: List<Trip>) {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerTrips)
+        val tvEmpty = view?.findViewById<TextView>(R.id.tvEmpty)
+
+        if (trips.isEmpty()) {
+            recyclerView?.visibility = View.GONE
+            tvEmpty?.visibility = View.VISIBLE
+        } else {
+            recyclerView?.visibility = View.VISIBLE
+            tvEmpty?.visibility = View.GONE
+        }
+
         adapter.updateTrips(trips)
     }
 

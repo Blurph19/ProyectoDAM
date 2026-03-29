@@ -1,5 +1,6 @@
 package com.example.tripplanner.ui.trips
 
+import android.R.attr.title
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -33,6 +34,8 @@ class TripAdapter(
         val imgTrip: ImageView = itemView.findViewById(R.id.imgTrip)
 
         val btnTripDetails: Button = itemView.findViewById<Button>(R.id.btnTripDetails)
+
+        val tvTripDates: TextView = itemView.findViewById(R.id.tvTripDates)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripViewHolder {
@@ -71,6 +74,8 @@ class TripAdapter(
                 .commit()
         }
 
+        holder.tvTripDates.text = getFormattedDateRange(trip.startDate, trip.endDate)
+
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         val status = when {
@@ -102,6 +107,28 @@ class TripAdapter(
     }
 
     override fun getItemCount(): Int = trips.size
+
+    private fun getFormattedDateRange(start: String?, end: String?): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
+
+        return try {
+            val startDate = start?.let { inputFormat.parse(it) }
+            val endDate = end?.let { if (it.isNotEmpty()) inputFormat.parse(it) else null }
+
+            when {
+                startDate != null && endDate != null -> {
+                    "${outputFormat.format(startDate)} - ${outputFormat.format(endDate)}"
+                }
+                startDate != null -> {
+                    "Desde el ${outputFormat.format(startDate)}"
+                }
+                else -> "Fecha pendiente"
+            }
+        } catch (e: Exception) {
+            "Fecha pendiente"
+        }
+    }
 
     fun updateTrips(newTrips: List<Trip>) {
         trips = newTrips

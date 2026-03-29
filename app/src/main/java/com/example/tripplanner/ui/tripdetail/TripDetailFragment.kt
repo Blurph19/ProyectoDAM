@@ -1,11 +1,16 @@
 package com.example.tripplanner.ui.tripdetail
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.tripplanner.R
 import com.example.tripplanner.data.local.entity.Trip
 import androidx.room.Room
@@ -22,6 +27,28 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
     private lateinit var trip: Trip
     private lateinit var database: AppDatabase
 
+    private lateinit var imageView: ImageView
+
+    private var imageUri: Uri? = null
+
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                imageUri = it
+                imageView.setImageURI(it)
+
+                requireContext().contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+
+                trip.imageUri = it.toString()
+
+                lifecycleScope.launch {
+                    database.tripDao().updateTrip(trip)
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,6 +86,16 @@ class TripDetailFragment : Fragment(R.layout.fragment_trip_detail) {
             imgTripHeader.setImageURI(Uri.parse(trip.imageUri))
         } else {
             imgTripHeader.setImageResource(R.drawable.ic_travel_placeholder)
+        }
+
+        //Editar/agregar imagen
+
+        imageView = view.findViewById(R.id.imgTripHeader)
+
+        val btnEditImage = view.findViewById<ImageButton>(R.id.btnEditPhoto)
+
+        btnEditImage.setOnClickListener {
+            pickImageLauncher.launch("image/*")
         }
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

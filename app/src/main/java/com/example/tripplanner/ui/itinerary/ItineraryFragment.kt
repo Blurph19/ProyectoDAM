@@ -1,17 +1,22 @@
 package com.example.tripplanner.ui.itinerary
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.tripplanner.R
 import com.example.tripplanner.data.local.database.AppDatabase
@@ -28,7 +33,6 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
 
     private lateinit var trip: Trip
     private lateinit var database: AppDatabase
-
     private var selectedStartDate: String? = null
     private var selectedEndDate: String? = null
 
@@ -137,21 +141,20 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
         //Eliminar viaje
         btnDeleteTrip.setOnClickListener {
 
-            AlertDialog.Builder(requireContext()).setTitle("Eliminar viaje")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Eliminar viaje")
                 .setMessage("¿Seguro que quieres eliminar este viaje?")
                 .setPositiveButton("Eliminar") { _, _ ->
 
-                    CoroutineScope(Dispatchers.IO).launch {
-
+                    lifecycleScope.launch {
                         database.tripDao().deleteTrip(trip)
-
-                        activity?.runOnUiThread {
-                            parentFragmentManager.popBackStack()
-                        }
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
-                }.setNegativeButton("Cancelar", null).show()
-        }
 
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
     }
 
     companion object {

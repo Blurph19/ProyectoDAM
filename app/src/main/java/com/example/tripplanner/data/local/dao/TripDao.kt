@@ -21,4 +21,8 @@ interface TripDao {
 
     @Delete
     suspend fun deleteTrip(trip: Trip)
+
+    @Query("SELECT COUNT(*) FROM Trip WHERE userId = :userId")
+    suspend fun getTripCount(userId: Int): Int
+
 }

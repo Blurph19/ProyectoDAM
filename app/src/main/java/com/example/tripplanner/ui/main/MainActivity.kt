@@ -12,6 +12,7 @@ import androidx.room.Room
 import com.example.tripplanner.data.local.database.AppDatabase
 import com.example.tripplanner.data.local.entity.ChecklistItem
 import com.example.tripplanner.data.local.entity.Expense
+import com.example.tripplanner.data.local.entity.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -137,50 +138,55 @@ class MainActivity : AppCompatActivity(),
 
         CoroutineScope(Dispatchers.IO).launch {
 
+            val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+            val demoInserted = prefs.getBoolean("demo_inserted", false)
+
             val userId = SessionManager.getUserId(this@MainActivity)
 
-            val existingTrips = database.tripDao().getTripsByUser(userId)
-
-            if (existingTrips.isEmpty()) {
+            if (!demoInserted) {
 
                 val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val calendar = Calendar.getInstance()
 
-                // 1️⃣ FINDE EN DUBLIN → PRÓXIMO (en 30 días)
 
-                val startDublin = Calendar.getInstance()
-                startDublin.add(Calendar.DAY_OF_YEAR, 30)
+                // 1 - Viaje a Japón: PRÓXIMO (en 30 días)
 
-                val endDublin = Calendar.getInstance()
-                endDublin.add(Calendar.DAY_OF_YEAR, 33)
+                val startJapan = Calendar.getInstance()
+                startJapan.add(Calendar.DAY_OF_YEAR, 30)
+
+                val endJapan = Calendar.getInstance()
+                endJapan.add(Calendar.DAY_OF_YEAR, 33)
 
                 val trip1 = Trip(
                     userId = userId,
-                    title = "Finde en Dublin",
-                    destination = "Irlanda",
-                    startDate = formatter.format(startDublin.time),
-                    endDate = formatter.format(endDublin.time),
-                    notes = "Primer viaje corto para conocer la ciudad"
+                    title = "Vacaciones en Japón",
+                    destination = "Japón",
+                    startDate = formatter.format(startJapan.time),
+                    endDate = formatter.format(endJapan.time),
+                    notes = "Viaje de 21 días para conocer Japón",
+                    imageUri = "android.resource://${packageName}/${R.drawable.japan}"
                 )
 
-                // 2️⃣ ESCAPADA A ROMA → EN CURSO
+                // 2 - VERANO EN PEÑÍSCOLA: PRÓXIMO (en 30 días)
 
-                val startRome = Calendar.getInstance()
-                startRome.add(Calendar.DAY_OF_YEAR, -1)
+                val startSpain = Calendar.getInstance()
+                startSpain.add(Calendar.DAY_OF_YEAR, -1)
 
-                val endRome = Calendar.getInstance()
-                endRome.add(Calendar.DAY_OF_YEAR, 3)
+                val endSpain = Calendar.getInstance()
+                endSpain.add(Calendar.DAY_OF_YEAR, 3)
 
                 val trip2 = Trip(
                     userId = userId,
-                    title = "Escapada a Roma",
-                    destination = "Italia",
-                    startDate = formatter.format(startRome.time),
-                    endDate = formatter.format(endRome.time),
-                    notes = "Visitar el Coliseo y el Vaticano"
+                    title = "Verano en Peñíscola",
+                    destination = "España",
+                    startDate = formatter.format(startSpain.time),
+                    endDate = formatter.format(endSpain.time),
+                    notes = "Viaje corto por la ciudad",
+                    imageUri = "android.resource://${packageName}/${R.drawable.peniscola}"
+
                 )
 
-                // 3️⃣ VIAJE A PARÍS → FINALIZADO
+                // 3️ - ESCAPADA A PARÍS: FINALIZADO
 
                 val startParis = Calendar.getInstance()
                 startParis.add(Calendar.DAY_OF_YEAR, -40)
@@ -190,22 +196,25 @@ class MainActivity : AppCompatActivity(),
 
                 val trip3 = Trip(
                     userId = userId,
-                    title = "Viaje a París",
+                    title = "Escapada a París",
                     destination = "Francia",
                     startDate = formatter.format(startParis.time),
                     endDate = formatter.format(endParis.time),
-                    notes = "Museos y paseo por el Sena"
+                    notes = "Museos y paseo por el Sena",
+                    imageUri = "android.resource://${packageName}/${R.drawable.paris}"
+
                 )
 
-                // 4️⃣ ROADTRIP DESDE REIKIAVIK → PENDIENTE (sin fechas)
+                // 4 - FINDE EN DUBLIN: PENDIENTE (sin fechas)
 
                 val trip4 = Trip(
                     userId = userId,
-                    title = "Roadtrip desde Reikiavik",
-                    destination = "Islandia",
+                    title = "Finde en Dublín",
+                    destination = "Irlanda",
                     startDate = null,
                     endDate = null,
-                    notes = "Planificar ruta por Islandia"
+                    notes = "Planificar ruta por Irlanda",
+                    imageUri = "android.resource://${packageName}/${R.drawable.dublin}"
                 )
 
                 val id1 = database.tripDao().insertTrip(trip1)
@@ -216,19 +225,35 @@ class MainActivity : AppCompatActivity(),
                 // CHECKLIST DEMO
 
                 database.checklistDao().insertItem(
-                    ChecklistItem(tripId = id1.toInt(), name = "Pasaporte", isChecked = true)
+                    ChecklistItem(tripId = id1.toInt(), name = "Reservar Hotel", isChecked = true)
                 )
 
                 database.checklistDao().insertItem(
-                    ChecklistItem(tripId = id1.toInt(), name = "Maleta pequeña", isChecked = false)
+                    ChecklistItem(tripId = id1.toInt(), name = "Preparar la maleta", isChecked = false)
                 )
 
                 database.checklistDao().insertItem(
-                    ChecklistItem(tripId = id2.toInt(), name = "Entradas Coliseo", isChecked = true)
+                    ChecklistItem(tripId = id2.toInt(), name = "Entradas al castillo", isChecked = true)
                 )
 
                 database.checklistDao().insertItem(
-                    ChecklistItem(tripId = id2.toInt(), name = "Reservar hotel", isChecked = false)
+                    ChecklistItem(tripId = id2.toInt(), name = "Reserva en el restaurante", isChecked = false)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id3.toInt(), name = "Entradas Louvre", isChecked = true)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id3.toInt(), name = "Paseo en barco por el Sena", isChecked = false)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id4.toInt(), name = "Buscar vuelos baratos", isChecked = false)
+                )
+
+                database.checklistDao().insertItem(
+                    ChecklistItem(tripId = id4.toInt(), name = "Ruta por Irlanda", isChecked = false)
                 )
 
                 // PRESUPUESTO DEMO
@@ -248,6 +273,24 @@ class MainActivity : AppCompatActivity(),
                 database.expenseDao().insertExpense(
                     Expense(tripId = id2.toInt(), title = "Comida", amount = 120.0)
                 )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id3.toInt(), title = "Museos", amount = 80.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id3.toInt(), title = "Comida", amount = 150.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id4.toInt(), title = "Vuelos estimados", amount = 200.0)
+                )
+
+                database.expenseDao().insertExpense(
+                    Expense(tripId = id4.toInt(), title = "Alojamiento", amount = 300.0)
+                )
+
+                prefs.edit().putBoolean("demo_inserted", true).apply()
             }
         }
     }

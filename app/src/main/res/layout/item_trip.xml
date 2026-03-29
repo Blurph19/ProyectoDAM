@@ -14,15 +14,13 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- Imagen circular -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgTrip"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:scaleType="centerInside"
-            android:background="@drawable/circle_background"
-            android:padding="0dp"
-            android:src="@drawable/ic_travel_placeholder"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_travel_placeholder"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
 
         <!-- Contenido -->
         <LinearLayout
@@ -42,31 +40,49 @@
                 android:textStyle="bold"
                 android:textColor="?attr/colorSecondary"/>
 
-            <!-- Fecha -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <!-- Fechas -->
+                <TextView
+                    android:id="@+id/tvTripDates"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="10 mayo - 17 mayo"
+                    android:textSize="14sp"
+                    android:textColor="#666"/>
+
+                <!-- Estado -->
+                <TextView
+                    android:id="@+id/tvTripStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PRÓXIMO"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:textColor="@android:color/white"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:background="@drawable/status_badge"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Destino -->
             <TextView
                 android:id="@+id/tvTripSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 mayo - 17 mayo"
+                android:layout_alignParentEnd="true"
+                android:text="Francia"
                 android:textSize="16sp"
-                android:textColor="#444"
-                android:layout_marginTop="4dp"/>
+                android:textStyle="italic"
+                android:textColor="#888" />
 
-            <!-- Status -->
-            <TextView
-                android:id="@+id/tvTripStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PRÓXIMO"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:background="@drawable/status_badge"
-                android:layout_marginTop="6dp"/>
 
             <!-- Botón -->
             <Button

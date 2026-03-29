@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.tripplanner.R
 import com.example.tripplanner.ui.main.MainActivity
@@ -45,6 +46,19 @@ class AuthActivity : AppCompatActivity() {
         )
             .fallbackToDestructiveMigration()
             .build()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val existingUser = database.userDao().getUserByEmail("demo123")
+
+            if (existingUser == null) {
+                val demoUser = User(
+                    email = "demo123",
+                    password = "demo123"
+                )
+                database.userDao().insertUser(demoUser)
+            }
+        }
 
         val etUser = findViewById<TextInputEditText>(R.id.etUser)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
